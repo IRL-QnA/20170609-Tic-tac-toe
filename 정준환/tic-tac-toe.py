@@ -38,7 +38,7 @@ def bingos(mark):
 game_map = [['.', '.', '.'],['.', '.', '.'],['.', '.', '.']]
 # (empty:'.' / player1:'O' / player2:'X')
 
-isDraw = False
+isDraw = True
 
 for i in range(0, 9):
     player_num = i % 2 + 1
@@ -65,6 +65,7 @@ for i in range(0, 9):
 
     b = bingos(mark_type)
     if b == 1:
+        isDraw = False
         print("Player" + str(player_num) + " won the game!")
         break
         
@@ -72,7 +73,7 @@ for i in range(0, 9):
         continue
 
     else:
-        isDraw == True
+        break
 
 if isDraw:
     print("Draw!")
