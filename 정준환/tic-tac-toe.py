@@ -13,18 +13,20 @@ def check_valid(x, y):
 def bingos(mark):
     bingo = 0
     # horizontal
-    for i in range (0, 3):
-        for j in range (0, 3):
+    for i in range(0, 3):
+        for j in range(0, 3):
             if game_map[i][j] != mark:
                 break
-            if j == 2: bingo += 1
+            if j == 2:
+                bingo += 1
 
     # vertical
-    for i in range (0, 3):
-        for j in range (0, 3):
+    for i in range(0, 3):
+        for j in range(0, 3):
             if game_map[j][i] != mark:
                 break
-            if j == 2: bingo += 1
+            if j == 2:
+                bingo += 1
     # diagonal
     if game_map[1][1] == mark:
         if game_map[0][0] == game_map[2][2] == mark:
@@ -32,10 +34,14 @@ def bingos(mark):
 
         if game_map[2][0] == game_map[0][2] == mark:
             bingo += 1
-    
+
     return bingo
 
-game_map = [['.', '.', '.'],['.', '.', '.'],['.', '.', '.']]
+game_map = [
+    ['.', '.', '.'],
+    ['.', '.', '.'],
+    ['.', '.', '.']
+]
 # (empty:'.' / player1:'O' / player2:'X')
 
 isDraw = True
@@ -50,7 +56,8 @@ for i in range(0, 9):
         x = int(coordinate[0])
         y = int(coordinate[1])
 
-        if check_valid(x, y): break
+        if check_valid(x, y):
+            break
 
         print(">>>유효하지 않은 값입니다.\n")
 
@@ -68,7 +75,7 @@ for i in range(0, 9):
         isDraw = False
         print("Player" + str(player_num) + " won the game!")
         break
-        
+
     elif b == 0:
         continue
 
