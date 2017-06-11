@@ -5,13 +5,19 @@ def print_map(game_map=None):
     print('-----------')
 
 def check_valid(x, y):
-    if x < 0 or x > 2 or y < 0 or y > 2:
+    available_value = ['0', '1', '2']
+    if not (x in available_value and y in available_value):
         return False
+
+    x = int(x)
+    y = int(y)
 
     return game_map[y][x] == '.'
 
 def bingos(mark):
+    global game_map
     bingo = 0
+
     # horizontal
     for i in range(0, 3):
         for j in range(0, 3):
@@ -37,50 +43,73 @@ def bingos(mark):
 
     return bingo
 
+def game_start():
+    # initiate game_map
+    global game_map
+    game_map = [
+        ['.', '.', '.'],
+        ['.', '.', '.'],
+        ['.', '.', '.']
+    ]
+    # (empty:'.' / player1:'O' / player2:'X')
+
+    isDraw = True
+
+    print_map(game_map)
+    for i in range(0, 9):
+        player_num = i % 2 + 1
+
+        while True:
+            coordinate = input("Player" + str(player_num) + ": x y\n").split(' ')
+
+            x = coordinate[0]
+
+            # 띄어쓰기 없이 값을 입력했을때의 경우를 거르기 위한 조건문
+            if len(coordinate) == 2:
+                y = coordinate[1]
+
+                if check_valid(x, y):
+                    x = int(x)
+                    y = int(y)
+                    break
+
+            print(">>> 유효하지 않은 값입니다. x, y값으로 0부터 2사이의 값을 입력해 주십시오.\n")
+
+
+        if player_num == 1:
+            mark_type = 'O'
+        else:
+            mark_type = 'X'
+
+        game_map[y][x] = mark_type
+        print_map(game_map)
+
+        b = bingos(mark_type)
+
+        if b == 1:
+            isDraw = False
+            print("Player" + str(player_num) + " won the game!")
+            break
+
+        elif b == 0:
+            continue
+
+        else:
+            break
+
+    if isDraw:
+        print("Draw!")
+
+    if input("\n>>> 게임을 계속하려면 Enter키를 눌러주세요.\n") == '':
+        return True
+    else:
+        return False
+
 game_map = [
     ['.', '.', '.'],
     ['.', '.', '.'],
     ['.', '.', '.']
 ]
-# (empty:'.' / player1:'O' / player2:'X')
-
-isDraw = True
-
-for i in range(0, 9):
-    player_num = i % 2 + 1
-
-    while True:
-        coordinate = input("Player" + str(player_num) + ": x y\n").split(' ')
-
-        # todo : 좌표값으로 정수형 외의 자료형을 넣었을때의 에러 처리
-        x = int(coordinate[0])
-        y = int(coordinate[1])
-
-        if check_valid(x, y):
-            break
-
-        print(">>>유효하지 않은 값입니다.\n")
-
-
-    if player_num == 1:
-        mark_type = 'O'
-    else:
-        mark_type = 'X'
-
-    game_map[y][x] = mark_type
-    print_map(game_map)
-
-    b = bingos(mark_type)
-    if b == 1:
-        isDraw = False
-        print("Player" + str(player_num) + " won the game!")
+while True:
+    if not game_start():
         break
-
-    elif b == 0:
-        continue
-
-    else:
-        break
-
-if isDraw:
-    print("Draw!")
