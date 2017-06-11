@@ -4,16 +4,6 @@ def print_map(game_map=None):
         print(' {} | {} | {}'.format(line[0], line[1], line[2]))
     print('-----------')
 
-def check_valid(x, y):
-    available_value = ['0', '1', '2']
-    if not (x in available_value and y in available_value):
-        return False
-
-    x = int(x)
-    y = int(y)
-
-    return game_map[y][x] == '.'
-
 def bingos(mark):
     global game_map
     bingo = 0
@@ -46,6 +36,7 @@ def bingos(mark):
 def game_start():
     # initiate game_map
     global game_map
+    global available_value
     game_map = [
         ['.', '.', '.'],
         ['.', '.', '.'],
@@ -62,15 +53,18 @@ def game_start():
         while True:
             coordinate = input("Player" + str(player_num) + ": x y\n").split(' ')
 
-            x = coordinate[0]
-
             # 띄어쓰기 없이 값을 입력했을때의 경우를 거르기 위한 조건문
             if len(coordinate) == 2:
+                x = coordinate[0]
                 y = coordinate[1]
 
-                if check_valid(x, y):
-                    x = int(x)
-                    y = int(y)
+                if not (x in available_value and y in available_value):
+                    continue
+
+                x = int(x)
+                y = int(y)
+
+                if game_map[y][x] == '.':
                     break
 
             print(">>> 유효하지 않은 값입니다. x, y값으로 0부터 2사이의 값을 입력해 주십시오.\n")
@@ -105,11 +99,13 @@ def game_start():
     else:
         return False
 
+available_value = ['0', '1', '2']
 game_map = [
     ['.', '.', '.'],
     ['.', '.', '.'],
     ['.', '.', '.']
 ]
+
 while True:
     if not game_start():
         break
